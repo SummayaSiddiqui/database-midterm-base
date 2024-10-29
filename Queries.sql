@@ -53,3 +53,11 @@ INSERT INTO rentals (customer_id, movie_id, rental_date, return_date) VALUES
 (1, 4, '2024-10-08', '2024-10-18'),
 (3, 3, '2024-10-09', '2024-10-19'),
 (4, 5, '2024-10-10', '2024-10-20');
+
+-- Queries to Solve Requirements
+-- Find all movies rented by a specific customer, given their email
+SELECT movies.title
+FROM movies
+JOIN rentals ON movies.movie_id = rentals.movie_id
+JOIN customers  ON rentals.customer_id = customers.customer_id 
+WHERE customers.email = 'charlie.brown@example.com';
