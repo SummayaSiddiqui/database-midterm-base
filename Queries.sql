@@ -69,3 +69,10 @@ JOIN rentals ON customers.customer_id = rentals.customer_id
 JOIN movies ON rentals.movie_id = movies.movie_id 
 WHERE movies.title = 'The Shawshank Redemption';
 
+-- Get the rental history for a specific movie title
+SELECT customers.first_name, customers.last_name, rentals.rental_date, rentals.return_date 
+FROM rentals
+JOIN movies ON rentals.movie_id = movies.movie_id
+JOIN customers ON rentals.customer_id = customers.customer_id 
+WHERE movies.title = 'The Shawshank Redemption';
+
