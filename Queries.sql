@@ -41,7 +41,7 @@ INSERT INTO customers (first_name, last_name, email, phone_number) VALUES
 ('Alice', 'Davis', 'alice.davis@example.com', '456-789-0123'),
 ('Charlie', 'Brown', 'charlie.brown@example.com', '567-890-1234');
 
--- This cript inserts Rentals in the table called 'rentals'
+-- This script inserts Rentals in the table called 'rentals'
 INSERT INTO rentals (customer_id, movie_id, rental_date, return_date) VALUES
 (1, 1, '2024-10-01', '2024-10-10'),
 (1, 3, '2024-10-02', '2024-10-09'),
@@ -75,4 +75,13 @@ FROM rentals
 JOIN movies ON rentals.movie_id = movies.movie_id
 JOIN customers ON rentals.customer_id = customers.customer_id 
 WHERE movies.title = 'The Shawshank Redemption';
+
+-- For a specific movie director:
+    -- Find the name of the customer, the date of the rental and title of the movie, each time a movie by that director was rented
+SELECT customers.first_name, customers.last_name, rentals.rental_date, movies.title 
+FROM rentals
+JOIN movies ON rentals.movie_id = movies.movie_id 
+JOIN customers ON rentals.customer_id = customers.customer_id 
+WHERE movies.director = 'Frank Darabont';
+
 
