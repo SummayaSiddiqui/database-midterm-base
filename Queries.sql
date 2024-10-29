@@ -61,3 +61,11 @@ FROM movies
 JOIN rentals ON movies.movie_id = rentals.movie_id
 JOIN customers  ON rentals.customer_id = customers.customer_id 
 WHERE customers.email = 'charlie.brown@example.com';
+
+-- Given a movie title, list all customers who have rented the movie
+SELECT customers.first_name, customers.last_name
+FROM customers
+JOIN rentals ON customers.customer_id = rentals.customer_id
+JOIN movies ON rentals.movie_id = movies.movie_id 
+WHERE movies.title = 'The Shawshank Redemption';
+
