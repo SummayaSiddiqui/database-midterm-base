@@ -34,7 +34,7 @@ async function createTable() {
       CREATE TABLE IF NOT EXISTS movies (
         movie_id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
-        year INT NOT NULL,
+        release_year INTEGER NOT NULL,
         genre TEXT NOT NULL,
         director TEXT NOT NULL
       );
@@ -42,21 +42,21 @@ async function createTable() {
 
     await client.query(`
       CREATE TABLE IF NOT EXISTS customers (
-        customerid SERIAL PRIMARY KEY,
+        customer_id SERIAL PRIMARY KEY,
         first_name TEXT NOT NULL,
         last_name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
-        phone TEXT NOT NULL
+        phone_number TEXT NOT NULL
       );
     `);
 
     await client.query(`
       CREATE TABLE IF NOT EXISTS rentals (
         rental_id SERIAL PRIMARY KEY,
-        customer_id INT REFERENCES Customers(id),
-        movie_id INT REFERENCES Movies(id),
-        rental_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        return_date TIMESTAMP
+        customer_id INTEGER REFERENCES customers(customer_id),
+        movie_id INTEGER REFERENCES movies(movie_id),
+        rental_date DATE NOT NULL,
+        return_date DATE
       );
     `);
 
