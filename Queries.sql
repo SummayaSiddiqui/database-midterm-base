@@ -1,6 +1,6 @@
 -- This scripts creates a table called 'movies'
 CREATE TABLE movies(
-  movie_id SERIAL PRIMARY KEY,
+    movie_id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     release_year INTEGER NOT NULL,
     genre TEXT NOT NULL,
