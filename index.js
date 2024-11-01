@@ -77,7 +77,26 @@ async function createTable() {
  * @param {string} director Director of the movie
  */
 async function insertMovie(title, year, genre, director) {
-  // TODO: Add code to insert a new movie into the Movies table
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      `
+      INSERT INTO movies (title, release_year, genre, director)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+      `,
+      [title, year, genre, director]
+    );
+
+    const insertedMovie = result.rows[0];
+    console.log(
+      `Movie added successfully: ID: ${insertedMovie.movie_id}, Title: ${insertedMovie.title}`
+    );
+  } catch (err) {
+    console.error("Error adding movie:", err);
+  } finally {
+    client.release();
+  }
 }
 
 /**
@@ -95,7 +114,7 @@ async function displayMovies() {
       console.log("Movies in the database:");
       movies.forEach((movie) => {
         console.log(
-          `ID: ${movie.movie_id}, Title: ${movie.title}, Year: ${movie.release_year}, Genre: ${movie.genre}, Director: ${movie.director}`
+          `ID: ${movie.movie_id}, Title: ${movie.title}, Release Year: ${movie.release_year}, Genre: ${movie.genre}, Director: ${movie.director}`
         );
       });
     }
