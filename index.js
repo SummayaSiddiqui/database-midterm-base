@@ -164,7 +164,46 @@ async function updateCustomerEmail(customerId, newEmail) {
  * @param {number} customerId ID of the customer to remove
  */
 async function removeCustomer(customerId) {
-  // TODO: Add code to remove a customer and their rental history
+  const client = await pool.connect();
+  try {
+    // Begin transaction
+    await client.query("BEGIN");
+
+    // Delete rentals associated with the customer
+    await client.query(
+      `
+      DELETE FROM rentals
+      WHERE customer_id = $1;
+      `,
+      [customerId]
+    );
+
+    // Delete customer record
+    const result = await client.query(
+      `
+      DELETE FROM customers
+      WHERE customer_id = $1
+      RETURNING *;
+      `,
+      [customerId]
+    );
+
+    if (result.rows.length > 0) {
+      console.log(
+        `Customer and rental history removed successfully: ID: ${result.rows[0].customer_id}`
+      );
+    } else {
+      console.log("No customer found with the provided ID.");
+    }
+
+    // Commit transaction
+    await client.query("COMMIT");
+  } catch (err) {
+    console.error("Error removing customer and rental history:", err);
+    await client.query("ROLLBACK"); // Rollback transaction in case of error
+  } finally {
+    client.release();
+  }
 }
 
 /**
